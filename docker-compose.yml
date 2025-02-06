@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - ./node_modules:/app/node_modules  # Ensure node_modules is stored locally
+    ports:
+      - "3000:3000"
+    command: ["sh", "/app/entrypoint.sh"]
