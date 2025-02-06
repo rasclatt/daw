@@ -1,13 +1,14 @@
-import { CircularProgress, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { IUserResponse } from "./interface";
 import { usersGetService } from "./service";
 import { useUser } from "../../providers/user.provider";
+import SearchIcon from '@mui/icons-material/Search';
+import { useState } from "react";
 
 /**
  * @description Form for submitting all my attributes to the API.
  *              I am allowing for a nationalities list so I can access the country name for better usage
  */
-
 export const nationalities = [
     { code: 'AU', name: 'Australia' },
     { code: 'BR', name: 'Brazil' },
@@ -40,30 +41,39 @@ interface IUserLookupForm {
 
 const UserLookupForm = ({ setGender, setFormData, formData }: IUserLookupForm) => {
     const { setUser, setUsers, loading, setLoading } = useUser();
+    const [ nat, setNat ] = useState<string[]>([]);
+    const [ toggle, setToggle ] = useState<boolean>(false);
     // Just a simple function to update the form data
     const updateFormData = (e: {target:{name: string, value: string}} | SelectChangeEvent<string | number>, func?: (v: string) => string) => {
-        const { name, value } = e.target;
-        setFormData({
-          ...formData,
-          [name]: typeof func !== "undefined"? func(value as string) : value,
-        });
-      };
-      // Submit event for the form. There are no required fields but the form allows for front-end validation
-      const onSubmitEvent = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setLoading(true);
-        const r = await usersGetService<{results: IUserResponse[]}>({
-          gender: formData.gender,
-          results: formData.numberOfUsers as number,
-          nat: formData.nationality,
-        });
-        if(formData.numberOfUsers === 1) {
-          setUser(r?.results[0] || {} as IUserResponse);
-        } else {
-          setUsers(r?.results || []);
-        }
-        setLoading(false);
+      const { name, value } = e.target;
+      setFormData({
+        ...formData,
+        [name]: typeof func !== "undefined"? func(value as string) : value,
+      });
+    };
+
+    const toNatList = (v: string) => {
+      if(!nat.includes(v))
+        setNat([...nat, v]);
+      else
+        setNat(nat.filter(n => n !== v));
+    }
+    // Submit event for the form. There are no required fields but the form allows for front-end validation
+    const onSubmitEvent = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setLoading(true);
+      const r = await usersGetService<IUserResponse[]>({
+        gender: formData.gender,
+        results: formData.numberOfUsers as number,
+        nat: toggle? nat.join(',') : formData.nationality,
+      });
+      if(formData.numberOfUsers === 1 && r?.results && r?.results.length > 0) {
+        setUser(r?.results[0] || {} as IUserResponse);
+      } else {
+        setUsers(r?.results || []);
       }
+      setLoading(false);
+    }
     // A simple form to allow for user lookup with MUI spinner
     return (
         <form className={ `p-4 ${loading? 'disabled' : ''}` } onSubmit={ onSubmitEvent }>
@@ -88,21 +98,49 @@ const UserLookupForm = ({ setGender, setFormData, formData }: IUserLookupForm) =
                 <MenuItem value='female'>Female</MenuItem>
               </Select>
             </FormControl>
-            {/* Loop the available nationalities since it's finite */}
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Nationality</InputLabel>
-              <Select
-                value={ formData.nationality }
-                name='nationality'
-                onChange={(e) => updateFormData(e)}
-              >
-            { nationalities.map((nationality) => (
-              <MenuItem key={nationality.code} value={nationality.code}>
-                { nationality.name }
-              </MenuItem>
-            ))}
-              </Select>
-            </FormControl>
+            {/* Loop the available nationalities since it's finite. Allow selection by checkbox or a single country, allows for flexibility */}
+            <div className="border p-2 rounded-lg">
+              <div className="flex justify-center items-center py-3">
+                  { toggle && <Button variant="outlined" size="small" onClick={() => setToggle(!toggle)}>Cancel</Button> }
+                  { !toggle && <Button variant="outlined" size="small" onClick={() => setToggle(!toggle)}>Choose Multiple</Button> }
+                  </div>
+                  { toggle && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {nationalities.map((nationality) => (
+                    <FormControlLabel
+                    key={nationality.code}
+                    control={
+                      <Checkbox
+                      checked={nat.includes(nationality.code)}
+                      onChange={() => toNatList(nationality.code)}
+                      name={nationality.name}
+                      />
+                    }
+                    label={nationality.name}
+                    />
+                  ))}
+                  </div>)}
+
+                  {!toggle && (
+                  <div>
+                    <FormControl fullWidth margin="normal">
+                    <InputLabel>Nationality</InputLabel>
+                    <Select
+                      value={ formData.nationality }
+                      name='nationality'
+                      onChange={(e) => updateFormData(e)}
+                    >
+                      <MenuItem value=''><em>None</em></MenuItem>
+                    { nationalities.map((nationality) => (
+                    <MenuItem key={nationality.code} value={nationality.code}>
+                      { nationality.name }
+                    </MenuItem>
+                    ))}
+                    </Select>
+                    </FormControl>
+                  </div>)}
+                </div>
+
             {/* Allow for user input, but make it only up to 999, even that is probably too many */}
             <FormControl fullWidth margin="normal">
               <TextField
@@ -114,7 +152,7 @@ const UserLookupForm = ({ setGender, setFormData, formData }: IUserLookupForm) =
             </FormControl>
 
             <div className="flex justify-center items-center pt-4">
-              <button type="submit" className="corporate">Search</button>
+              <button type="submit" className="corporate"><SearchIcon />&nbsp;Search</button>
             </div>
         </form>
     );

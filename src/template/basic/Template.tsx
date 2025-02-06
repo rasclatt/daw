@@ -1,5 +1,5 @@
 import { JSX, ReactNode } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logoImage from '../../media/images/logo.png';
 import logoImageWht from '../../media/images/logo-white.png';
 import Footer from "./Footer";
@@ -18,7 +18,6 @@ interface ITemplate {
  *              for other templates to be created and used at some point, if needed. 
  */
 const Template = ({ children, bkgImage, bkgColor, align, logo, overlay, fullWidth }: ITemplate) => {
-    const nav = useNavigate();
     let inlineStyle = {};
     if (bkgColor) {
         inlineStyle = { backgroundColor: bkgColor };
@@ -40,7 +39,7 @@ const Template = ({ children, bkgImage, bkgColor, align, logo, overlay, fullWidt
                     { children }
                 </div>
             </div>
-            { overlay && <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => nav('/')}></div> }
+            { overlay && <div className="fixed inset-0 bg-black bg-opacity-50"></div> }
         </div>
         <Footer />
         </>

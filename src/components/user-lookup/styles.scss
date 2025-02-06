@@ -1,8 +1,36 @@
+@mixin hoverUserImg {
+    opacity: 1;
+}
 .user-lookup-single {
     display: grid;
     grid-template: 1fr / auto 1fr;
     gap: 1rem;
     @media screen and (max-width: 768px) {
         grid-template: auto / 1fr;
+    }
+}
+.name-group {
+    cursor: pointer;
+    .name-group-thumb {
+        transition: ease-in-out 0.3s;
+        display: inline-block;
+        position: absolute;
+        opacity: 0;
+        z-index: 1000;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #fff;
+        box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+        left: -2px;
+    }
+    &:hover {
+        .name-group-thumb {
+            @include hoverUserImg;
+        }
+        .name-group-thumb {
+            &:hover {
+                @include hoverUserImg;
+            }
+        }
     }
 }

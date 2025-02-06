@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useUser } from "../../providers/user.provider";
 import UserLookupDatatable from "./datatable";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import UserLookupUser from "./user";
 import UserLookupForm from "./form";
-import { useUser } from "../../providers/user.provider";
+import './styles.scss';
 
 interface IUserForm {
   gender: 'female' | 'male' | '',
@@ -19,8 +20,13 @@ const UserLookupComponent = ({ setGender }: { setGender: (type: 'female' | 'male
     });
     const { user, users, setUsers, setUser, loading } = useUser();
 
+    const backButton = () => {
+      setUsers([]);
+      setUser({} as any);
+    };
+
     return (
-    <div className="bg-white p-4 mt-4 rounded-lg shadow-lg">
+    <div className={`bg-white p-4 mt-4 rounded-lg shadow-lg ${user?.name? 'user-card' : ''}`}>
         <>
         { !user?.name && users.length === 0 && (
         <UserLookupForm
@@ -28,10 +34,11 @@ const UserLookupComponent = ({ setGender }: { setGender: (type: 'female' | 'male
           setFormData={setFormData}
           formData={formData}
         />)}
-        { users.length > 0 && !user?.name && !loading && <button className="corporate-btn" style={{marginTop: 0}} onClick={() => {
-            setUsers([]);
-            setUser({} as any);
-          }}><BackspaceIcon fontSize="small" /></button> }
+        { users.length > 0 && !user?.name && !loading && (
+          <div className="flex justify-start items-center mb-4">
+            <button className="corporate-btn" style={{marginTop: 0}} onClick={ backButton }><BackspaceIcon fontSize="small" /></button>&nbsp;<span className="font-bold cursor-pointer" onClick={backButton}>BACK</span>
+          </div>
+          ) }
         { !user?.name && <UserLookupDatatable /> }
         { user?.name && <UserLookupUser /> }
         </>

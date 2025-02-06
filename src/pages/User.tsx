@@ -9,7 +9,7 @@ import guyBkg from '../media/images/guy.jpg';
  */
 const UserPage: React.FC = () => {
     const [ gender, setGender ] = useState<'female' | 'male' | ''>('');
-    const { users } = useUser();
+    const { users, user } = useUser();
 
     return (
         <Template
@@ -18,7 +18,7 @@ const UserPage: React.FC = () => {
             bkgColor='#222'
             logo
             overlay
-            fullWidth={ users.length > 0 }
+            fullWidth={ users.length > 0 && !user?.name }
         >
             <UserLookupComponent setGender={ setGender } />
         </Template>

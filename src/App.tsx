@@ -1,15 +1,14 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import React from 'react';
-import UserPage from './pages/User';
-import HomePage from './pages/Home';
-import { UserProvider } from './providers/user.provider';
+import publicRoutes from './routes/public';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={ <HomePage /> } />
-        <Route path="/user-lookup" element={ <UserProvider><UserPage /></UserProvider> } />
+        { publicRoutes.map((route, i) => (
+          <Route key={ i } path={ route.path } element={ route.element } />
+        ))}
       </Routes>
     </BrowserRouter>
   );

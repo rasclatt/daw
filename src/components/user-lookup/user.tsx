@@ -7,7 +7,6 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import './styles.scss';
 
 const UserLookupUser = () => {
     const { setUser, user } = useUser();
@@ -15,13 +14,16 @@ const UserLookupUser = () => {
     return (
         <div className='user-lookup-single'>
             <div className='user-lookup-single-image'>
-                <img src={ user.picture.large } alt={ `${user.name.first} ${user.name.last}` } className="rounded-full w-40 h-40 m-auto" />
+                <div className='relative'>
+                    <img className='absolute' style={{maxHeight: 50, bottom: 0, right: 0, zIndex: 10}} src={`https://flagsapi.com/${nationalities.filter((v) => v.code === user.nat)[0].code}/flat/64.png`} />
+                    <img src={ user.picture.large } alt={ `${user.name.first} ${user.name.last}` } className="rounded-full w-40 h-40 m-auto" />
+                </div>
                 <div className="flex justify-center items-center">
                     <button style={{appearance: 'none'}} className='m-0 corporate-btn transform scale-60 transition-transform duration-200' onClick={() => setUser({} as IUserResponse)}><ArrowBackIosNewIcon fontSize='small' /></button>
                 </div>
             </div>
             <div className='user-lookup-single-details'>
-                <Typography variant="h6" component="h6" className="py-4">{user.name.first} {user.name.last} / { nationalities.filter((v) => v.code === user.nat)[0].name }</Typography>
+                <Typography variant="h6" component="h6" className="py-4 flex space-between">{user.name.first} {user.name.last} / { nationalities.filter((v) => v.code === user.nat)[0].name }</Typography>
                 <hr className='mb-4' />
                 {
                     [
