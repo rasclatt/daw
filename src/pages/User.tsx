@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
+import { useUser } from '../providers/user.provider';
 import UserLookupComponent from '../components/user-lookup';
 import Template from '../template/basic/Template';
 import guyBkg from '../media/images/guy.jpg';
-import { UserProvider } from '../providers/user.provider';
 
 /**
  * @description User page to demonstrate routing and context usage.
  */
 const UserPage: React.FC = () => {
     const [ gender, setGender ] = useState<'female' | 'male' | ''>('');
-    
+    const { users } = useUser();
+
     return (
         <Template
             align={ gender === 'female'? 'top' : 'center' }
@@ -17,10 +18,9 @@ const UserPage: React.FC = () => {
             bkgColor='#222'
             logo
             overlay
+            fullWidth={ users.length > 0 }
         >
-            <UserProvider>
-                <UserLookupComponent setGender={setGender} />
-            </UserProvider>
+            <UserLookupComponent setGender={ setGender } />
         </Template>
     );
 };

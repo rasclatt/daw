@@ -4,7 +4,7 @@ import SendIcon from '@mui/icons-material/Send';
 
 const Footer: React.FC = () => {
     return (
-        <footer className="bg-gray-800 text-white py-4">
+        <footer className="bg-gray-800 text-white py-4 relative index-10000">
             <div className="container mx-auto px-4 flex justify-between items-center">
                 <p className="text-sm md:text-base lg:text-lg">
                     DAW Systems, Inc. &copy; {new Date().getFullYear()}. All Rights Reserved.
