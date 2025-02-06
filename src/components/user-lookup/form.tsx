@@ -80,7 +80,7 @@ const UserLookupForm = ({ setGender, setFormData, formData }: IUserLookupForm) =
             { loading && <div className="thinker absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center">
               <CircularProgress color="secondary" />
             </div> }
-            <Typography variant="h5" component="h5" className="pb-4 text-red-dark">User Lookup</Typography>
+            <Typography variant="h5" component="h5" className="pb-4 text-red-dark">Friend Lookup</Typography>
             <p>Let's find some users who just might be your next best friend!</p>
             {/* Make sure to control user selection, no need for user to select since there are only 3 possible */}
             <FormControl fullWidth margin="normal">
