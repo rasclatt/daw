@@ -39,3 +39,5 @@ The project runs a React instance with ViteJS as the bundler. I have found vitej
 As you can see in the list of dependencies, I have installed sass, tailwind, and MUI for the interface. I like using that combination because each has great features and UX that works well together, in my opinion.
 
 It is also note-worthy that I have used images from [Pexels](https://www.pexels.com/) for the photography. I use it because it's nice quality, it jazzes up an otherwise-boring layout and it's royalty free!
+
+> **Note:** The webpage takes a few extra seconds to load on first-run due to the cold-start.
