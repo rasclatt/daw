@@ -8,6 +8,14 @@
     @media screen and (max-width: 768px) {
         grid-template: auto / 1fr;
     }
+
+    .user-lookup-single-info {
+        grid-column: span 2;
+        @media screen and (max-width: 768px) {
+            grid-column: span 1;
+            
+        }
+    }
 }
 .name-group {
     cursor: pointer;

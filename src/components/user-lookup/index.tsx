@@ -18,11 +18,12 @@ const UserLookupComponent = ({ setGender }: { setGender: (type: 'female' | 'male
       nationality: '',
       numberOfUsers: 5,
     });
-    const { user, users, setUsers, setUser, loading } = useUser();
+    const { user, users, setUsers, setUser, loading, resetPage } = useUser();
 
     const backButton = () => {
       setUsers([]);
       setUser({} as any);
+      resetPage();
     };
 
     return (

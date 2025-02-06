@@ -8,7 +8,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
  * @description User lookup datatable component. Just using a MUI datagrid to remove homegrown table.
  */
 const UserLookupDatatable = () => {
-    const { setUser, loading, users } = useUser();
+    const { setUser, loading, users, page, setPage } = useUser();
     return (
         users.length > 0 && !loading && (
             <>
@@ -39,6 +39,8 @@ const UserLookupDatatable = () => {
                   )},
                 ]}
                 pageSizeOptions={[5, 10, 20, 100]}
+                paginationModel={ page }
+                onPaginationModelChange={ setPage }
               />
             </>
           )
