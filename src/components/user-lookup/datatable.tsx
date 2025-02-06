@@ -1,10 +1,14 @@
 import { Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { IUserResponse } from './interface';
+import { useUser } from '../../providers/user.provider';
 import SendIcon from '@mui/icons-material/Send';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
-const UserLookupDatatable = ({ loading, users, setUser }: {loading: boolean, users: IUserResponse[], setUser: (user: IUserResponse) => void }) => {
+/**
+ * @description User lookup datatable component. Just using a MUI datagrid to remove homegrown table.
+ */
+const UserLookupDatatable = () => {
+    const { setUser, loading, users } = useUser();
     return (
         users.length > 0 && !loading && (
             <>

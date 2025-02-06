@@ -1,0 +1,25 @@
+// Create image declarations for typescript to recognize image imports without declaration errors in VS
+declare module '*.png' {
+    const value: string;
+    export default value;
+}
+
+declare module '*.jpg' {
+    const value: string;
+    export default value;
+}
+
+declare module '*.jpeg' {
+    const value: string;
+    export default value;
+}
+
+declare module '*.gif' {
+    const value: string;
+    export default value;
+}
+
+declare module '*.svg' {
+    const value: string;
+    export default value;
+}

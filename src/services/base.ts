@@ -1,5 +1,12 @@
 import { environment } from "../environment";
 
+/**
+ * @description HttpClient class for handling HTTP requests. It has the ability to handle custom headers including
+ *              the Content-Type and Authorization headers. The class is designed to be used as a singleton, but can
+ *              be instantiated multiple times if needed. There is also an apparatus to upload using form data.
+ * 
+ */
+
 type IHttpClient = {
     "Access-Control-Allow-Headers": string,
     "Access-Control-Allow-Methods": string,

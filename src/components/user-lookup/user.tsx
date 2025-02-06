@@ -1,21 +1,23 @@
 import { Button, Typography } from '@mui/material';
-import { IUserResponse } from './interface';
 import { nationalities } from './form';
 import { useState } from 'react';
+import { useUser } from '../../providers/user.provider';
+import { IUserResponse } from './interface';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import './styles.scss';
 
-const UserLookupUser = ({ user, setUser }: { user: IUserResponse, setUser: (obj: {}) => void }) => {
+const UserLookupUser = () => {
+    const { setUser, user } = useUser();
     const [ showAll, setShowAll ] = useState<boolean>(false);
     return (
         <div className='user-lookup-single'>
             <div className='user-lookup-single-image'>
                 <img src={ user.picture.large } alt={ `${user.name.first} ${user.name.last}` } className="rounded-full w-40 h-40 m-auto" />
                 <div className="flex justify-center items-center">
-                    <button style={{appearance: 'none'}} className='corporate-btn' onClick={() => setUser({})}><ArrowBackIosNewIcon /></button>
+                    <button style={{appearance: 'none'}} className='m-0 corporate-btn transform scale-60 transition-transform duration-200' onClick={() => setUser({} as IUserResponse)}><ArrowBackIosNewIcon fontSize='small' /></button>
                 </div>
             </div>
             <div className='user-lookup-single-details'>
@@ -49,7 +51,9 @@ const UserLookupUser = ({ user, setUser }: { user: IUserResponse, setUser: (obj:
 
 export default UserLookupUser;
 
-
+/**
+ * @description Auto Table generator Component for quick (but not so lovely) data display
+ */
 const UserLookupAutoTableComponent = ({ data, border = true }: { data: any, border: boolean }) => {
     return (
         typeof data === 'object' && Object.keys(data).length > 0 && (

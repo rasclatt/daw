@@ -1,6 +1,12 @@
-import { CircularProgress, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
+import { CircularProgress, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { IUserResponse } from "./interface";
 import { usersGetService } from "./service";
+import { useUser } from "../../providers/user.provider";
+
+/**
+ * @description Form for submitting all my attributes to the API.
+ *              I am allowing for a nationalities list so I can access the country name for better usage
+ */
 
 export const nationalities = [
     { code: 'AU', name: 'Australia' },
@@ -28,24 +34,21 @@ export const nationalities = [
 
 interface IUserLookupForm {
     setGender: (gender: 'female' | 'male' | '') => void,
-    loading: boolean,
-    setUser: (user: IUserResponse | any) => void,
-    setUsers: (users: IUserResponse[]) => void,
-    setLoading: (loading: boolean) => void,
+    setFormData: (data: any) => void,
     formData: any,
-    setFormData: (data: any) => void
 };
 
-const UserLookupForm = ({ setGender, loading, setUser, setUsers, setFormData, formData, setLoading }: IUserLookupForm) => {
-
-    const updateFormData = (e: {target:{name: string, value: string}} | SelectChangeEvent<string | number>) => {
+const UserLookupForm = ({ setGender, setFormData, formData }: IUserLookupForm) => {
+    const { setUser, setUsers, loading, setLoading } = useUser();
+    // Just a simple function to update the form data
+    const updateFormData = (e: {target:{name: string, value: string}} | SelectChangeEvent<string | number>, func?: (v: string) => string) => {
         const { name, value } = e.target;
         setFormData({
           ...formData,
-          [name]: value,
+          [name]: typeof func !== "undefined"? func(value as string) : value,
         });
       };
-  
+      // Submit event for the form. There are no required fields but the form allows for front-end validation
       const onSubmitEvent = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
@@ -55,20 +58,21 @@ const UserLookupForm = ({ setGender, loading, setUser, setUsers, setFormData, fo
           nat: formData.nationality,
         });
         if(formData.numberOfUsers === 1) {
-          setUser(r?.results[0] || {});
+          setUser(r?.results[0] || {} as IUserResponse);
         } else {
           setUsers(r?.results || []);
         }
         setLoading(false);
       }
-  
+    // A simple form to allow for user lookup with MUI spinner
     return (
         <form className={ `p-4 ${loading? 'disabled' : ''}` } onSubmit={ onSubmitEvent }>
             { loading && <div className="thinker absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center">
               <CircularProgress color="secondary" />
             </div> }
-            <Typography variant="h5" component="h5" className="pb-4">User Lookup</Typography>
-            <Typography variant="body1" component="p" className="pb-4">Let's find some users who just might be your next best friend!</Typography>
+            <Typography variant="h5" component="h5" className="pb-4 text-red-dark">User Lookup</Typography>
+            <p>Let's find some users who just might be your next best friend!</p>
+            {/* Make sure to control user selection, no need for user to select since there are only 3 possible */}
             <FormControl fullWidth margin="normal">
               <InputLabel>Gender</InputLabel>
                 <Select
@@ -84,6 +88,7 @@ const UserLookupForm = ({ setGender, loading, setUser, setUsers, setFormData, fo
                 <MenuItem value='female'>Female</MenuItem>
               </Select>
             </FormControl>
+            {/* Loop the available nationalities since it's finite */}
             <FormControl fullWidth margin="normal">
               <InputLabel>Nationality</InputLabel>
               <Select
@@ -93,24 +98,24 @@ const UserLookupForm = ({ setGender, loading, setUser, setUsers, setFormData, fo
               >
             { nationalities.map((nationality) => (
               <MenuItem key={nationality.code} value={nationality.code}>
-                {nationality.name}
+                { nationality.name }
               </MenuItem>
             ))}
               </Select>
             </FormControl>
+            {/* Allow for user input, but make it only up to 999, even that is probably too many */}
             <FormControl fullWidth margin="normal">
-              <InputLabel>Number of Users</InputLabel>
-              <Select
-            value={ formData.numberOfUsers }
-            name='numberOfUsers'
-            onChange={(e) => updateFormData(e)}
-              >
-            { [5, 20, 50, 100, 500].map((num) => (
-          <MenuItem key={num} value={num}>{num}</MenuItem>
-            )) }
-              </Select>
+              <TextField
+                label="Number of Users"
+                value={ formData.numberOfUsers }
+                name='numberOfUsers'
+                onChange={(e) => updateFormData(e, (v: string) => v.replace(/[^\d]/gi, '').substring(0, 3))}
+              />
             </FormControl>
-            <button type="submit" className="uppercase bg-orange hover:bg-orange-dark text-white py-3 px-5 rounded-full mt-4 transition ease-in-out font-medium">Search</button>
+
+            <div className="flex justify-center items-center pt-4">
+              <button type="submit" className="corporate">Search</button>
+            </div>
         </form>
     );
 };

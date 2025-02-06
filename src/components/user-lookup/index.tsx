@@ -3,6 +3,7 @@ import UserLookupDatatable from "./datatable";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import UserLookupUser from "./user";
 import UserLookupForm from "./form";
+import { useUser } from "../../providers/user.provider";
 
 interface IUserForm {
   gender: 'female' | 'male' | '',
@@ -16,26 +17,25 @@ const UserLookupComponent = ({ setGender }: { setGender: (type: 'female' | 'male
       nationality: '',
       numberOfUsers: 5,
     });
-    const [ users, setUsers ] = useState<any[]>([]);
-    const [ user, setUser ] = useState<any>({});
-    const [ loading, setLoading ] = useState<boolean>(false);
+    const { user, users, setUsers, setUser, loading } = useUser();
 
     return (
     <div className="bg-white p-4 mt-4 rounded-lg shadow-lg">
+        <>
         { !user?.name && users.length === 0 && (
         <UserLookupForm
           setGender={setGender}
-          loading={loading}
-          setUser={setUser}
-          setUsers={setUsers}
           setFormData={setFormData}
           formData={formData}
-          setLoading={setLoading}
         />)}
-        { users.length > 0 && !user?.name && !loading && <button className="corporate-btn" onClick={() => setUsers([])}><BackspaceIcon /></button> }
-        { !user?.name && <UserLookupDatatable loading={loading} users={users} setUser={ setUser } /> }
-        { user?.name && <UserLookupUser user={ user } setUser={ setUser } /> }
-        </div>
+        { users.length > 0 && !user?.name && !loading && <button className="corporate-btn" style={{marginTop: 0}} onClick={() => {
+            setUsers([]);
+            setUser({} as any);
+          }}><BackspaceIcon fontSize="small" /></button> }
+        { !user?.name && <UserLookupDatatable /> }
+        { user?.name && <UserLookupUser /> }
+        </>
+      </div>
     )
 }
 
