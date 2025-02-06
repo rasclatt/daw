@@ -101,8 +101,7 @@ const UserLookupForm = ({ setGender, setFormData, formData }: IUserLookupForm) =
             {/* Loop the available nationalities since it's finite. Allow selection by checkbox or a single country, allows for flexibility */}
             <div className="border p-2 rounded-lg">
               <div className="flex justify-center items-center py-3">
-                  { toggle && <Button variant="outlined" size="small" onClick={() => setToggle(!toggle)}>Cancel</Button> }
-                  { !toggle && <Button variant="outlined" size="small" onClick={() => setToggle(!toggle)}>Choose Multiple</Button> }
+                  You are able to choose&nbsp;{ <button type="button" className={`no-appearance ${!toggle? 'active' : ''}`} onClick={() => setToggle(false)}>one</button> }&nbsp;nationality or&nbsp;{ <button type="button" className={`no-appearance ${toggle? 'active' : ''}`} onClick={() => setToggle(true)}>multiple</button> }.
                   </div>
                   { toggle && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
