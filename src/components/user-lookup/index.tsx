@@ -37,7 +37,7 @@ const UserLookupComponent = ({ setGender }: { setGender: (type: 'female' | 'male
         />)}
         { users.length > 0 && !user?.name && !loading && (
           <div className="flex justify-start items-center mb-4">
-            <button className="corporate-btn" style={{marginTop: 0}} onClick={ backButton }><BackspaceIcon fontSize="small" /></button>&nbsp;<span className="font-bold cursor-pointer" onClick={backButton}>BACK</span>
+            <button className="icon-btn mod" style={{marginTop: 0}} onClick={ backButton }><BackspaceIcon fontSize="small" /></button>&nbsp;<span className="font-bold cursor-pointer" onClick={backButton}>BACK</span>
           </div>
           ) }
         { !user?.name && <UserLookupDatatable /> }

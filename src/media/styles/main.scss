@@ -37,3 +37,23 @@ h1, h2, h3, h4, h5, h6 {
 .user-card {
   box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.5);
 }
+
+.icon-btn {
+  height: 40px;
+  width: 40px;
+  padding: 0.35em;
+  background-color: #CC0000;
+  border-radius: 50%;
+  color: #FFF;
+  transition: ease-in-out 0.1s;
+  &:hover {
+    transform: scale(1.1);
+  }
+  &.mod {
+    > svg {
+      position: relative;
+      left: -2px;
+      top: -2px;
+    }
+  }
+}
