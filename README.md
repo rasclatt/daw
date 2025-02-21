@@ -41,3 +41,20 @@ As you can see in the list of dependencies, I have installed sass, tailwind, and
 It is also note-worthy that I have used images from [Pexels](https://www.pexels.com/) for the photography. I use it because it's nice quality, it jazzes up an otherwise-boring layout and it's royalty free!
 
 > **Note:** The webpage takes a few extra seconds to load on first-run due to the cold-start.
+
+## Challenge Requirements:
+1. User Input
+- Implement input fields for specifying parameters such as gender, nationality, and number of users to fetch.
+- Provide a submit button to trigger the API request.
+
+2. API Integration
+- Integrate with the Random User Generator API to fetch random user data based on the specified parameters.
+- Handle the API request and response using asynchronous JavaScript (e.g., Fetch API, Axios).
+
+3. Display Data
+- Display the fetched user data on the page.
+- Present relevant user information such as name, gender, email, picture, etc.
+
+4. Styling and UI/UX
+- Show off your UI styling to cleanly display the data for appearance and usability.
+- Ensure responsiveness to different screen sizes for a seamless user experience.
